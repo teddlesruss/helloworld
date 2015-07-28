@@ -1,0 +1,7 @@
+These are standard libraries and you should already have them or be able to pull them.
+
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_TFTLCD.h> // Hardware-specific library
+#include <DHT.h>             // DHT temp humidity library
+
+The project uses the LCD/touch/Arduino combo from banggood.com very cheap way to get everything. 
