@@ -43,41 +43,26 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup(void) {
   Serial.begin(9600);
-  //  Serial.println(F("TFT LCD test"));
   dht.begin(); // Get comms going to DHT
-  Serial.print("TFT size is "); Serial.print(tft.width()); Serial.print("x"); Serial.println(tft.height());
   tft.reset();
   uint16_t identifier = tft.readID();
   tft.begin(identifier);
 }
 
 void loop(void) {
-  // Reading temperature or humidity takes about 250 milliseconds!
-  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   float h = dht.readHumidity();
-  // Read temperature as Celsius (the default)
   float t = dht.readTemperature();
-  // Check if any reads failed and exit early (to try again).
   if (isnan(h) || isnan(t)) {
-    // All this "#S|ALLLOG|[]" stuff is sent back to the PC or laptop
-    // to trigger a piece of software called "Gobetwino" which allows
-    // you to perform a few functions on the PC and send data back to
-    // the Arduino if you need to.
-    Serial.print("#S|ALLLOG|[");
-    Serial.print("Failed to read from DHT sensor!");
-    Serial.println("]#");
-    delay(6000);
+    Serial.println("Doh!");
+    tft.setCursor(64, 280);
+    tft.setTextColor(WHITE); tft.setTextSize(2);
+    tft.println("             ");
+    tft.setCursor(64, 280);
+    tft.println("Comm Err");
+    delay(2000);
   }
   else {
-    Serial.print("#S|ALLLOG|[");
-    Serial.print("  T: ");
-    Serial.print(t);
-    Serial.print(" *C \t");
-    Serial.print("H: ");
-    Serial.print(h);
-    Serial.print(" %");
-    Serial.println("]#");
-    // Now put it to LCD
+    
     tft.fillScreen(BLACK);
     tft.setCursor(0, 0);
     tft.setTextColor(WHITE);  tft.setTextSize(2);
@@ -89,16 +74,30 @@ void loop(void) {
     tft.setTextColor(RED);    tft.setTextSize(5);
     tft.println();
     tft.setTextColor(RED);    tft.setTextSize(5);
-    tft.print(" T:");
+    tft.print("T:");
     tft.setTextColor(YELLOW);    tft.setTextSize(5);
     tft.println(t);
     tft.println();
     tft.setTextColor(RED);    tft.setTextSize(5);
-    tft.print(" H:");
+    tft.print("H:");
     tft.setTextColor(YELLOW);    tft.setTextSize(5);
     tft.println(h);
     tft.println();
-    delay(600000);
+    for(int i=0; i < 29; i++){   
+        delay(1000);          
+        tft.setTextColor(RED); tft.setTextSize(2);
+        tft.setCursor(164, 300);
+        tft.print("*");
+//         tft.print(i);
+        tft.println("   ");
+        delay(1000);          
+        tft.setTextColor(WHITE); tft.setTextSize(2);
+        tft.setCursor(164, 300);
+        tft.print("*");
+//         tft.print(i);
+        tft.println("   ");
+        }
+//     delay(12000);
   }
 }
 
